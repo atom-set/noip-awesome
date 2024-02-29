@@ -66,6 +66,7 @@ int main( ){
 
 
     // 处理幸运化，从后完全遍历
+    // eg: 如果 next_lucky[56]不是幸运数，+1 后是next_lucky[57]，如果next_lucky[57]是幸运数，就放57，如果不是，next_lucky[57] 下一个就到58了
     for(int i = N; i; i--) {
         next_lucky[i] = is_lucky[i] ? i : next_lucky[i+1];
     }
