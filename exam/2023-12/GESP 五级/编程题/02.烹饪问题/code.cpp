@@ -12,19 +12,19 @@ const int MAX_N = int(1e6) + 100;
 
 int a[MAX_N];	
 
-int sort(int m, int r, int k) {	
-    cout << "m  r  k:" << m << r << k << endl;
-    while(m <= r) {	
-        cout << "m  r  k  a[m]  a[r]:" << m << "--" << r << "--" << k  << "--" << a[m] << "--" << a[r] << endl;
-        while ((m <= r) && (a[m] >> k & 1)) m++;
-        while ((m <= r) && (!(a[r] >> k & 1))) r--;
-
-        cout << "m r:" << m << "--" << r << endl;
-        if (m <= r) {
-            swap(a[m++], a[r--]);
-        };	
+int sort(int right, int bit) {
+    int left = 1;
+    while(left <= right) {	
+        //  如果 left 左移 bit 位后，& 1 不为 0，left++
+        while ((left <= right) && ((a[left] >> bit) & 1)) left++;
+         //  如果 right 左移  bit 位后，& 1 不为 0，right--
+        while ((left <= right) && (!((a[right] >> bit) & 1))) right--;
+        // 交互 left  和 right
+        if (left <= right) {
+            swap(a[left++], a[right--]);
+        };
     }
-    return r;	
+    return right;	
 }
 
 
@@ -37,12 +37,14 @@ int main() {
     }
 
     for (int i = 31; i >= 0; i--)	{
-        if ((j = sort(1,n,i)) >= 2) {	
-            ans = ans | (1<< i);	
+        // sort(n,i) 返回的 right 大于2，说明前2位的 & 不为 0，记录下来存放到 ans 中
+        if (((j = sort(n,i))) >= 2) {	
+            ans = ans | (1 << i);	
+            // 下次处理时候，忽略掉已处理的数据
   	        n = j;	
-        }	
+        }
     }
 
     printf("%d\n", ans);	
-	return 0;	
+	  return 0;	
 }
